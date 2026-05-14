@@ -1,135 +1,97 @@
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 import random
-score_history = []
+import time
 
+score_history = []
 
 topics_data = {
 
     "programming": {
         "Variables":
-            "Variables are used to store data values in a program.\n\n"
-            "Example:\n x = 10\n name = 'Charvi'\n\n"
-            "They allow us to reuse and manipulate data easily.",
+            "Variables store data values.\n\n"
+            "Example:\n x = 10\n name = 'Charvi'",
 
         "Loops":
-            "Loops are used to repeat a block of code multiple times.\n\n"
-            "Types:\n- for loop\n- while loop\n\n"
-            "Example:\n for i in range(5):\n     print(i)\n\n"
-            "This prints numbers from 0 to 4.",
+            "Loops repeat code multiple times.\n\n"
+            "Example:\n for i in range(5):\n     print(i)",
 
         "Functions":
             "Functions are reusable blocks of code.\n\n"
-            "Defined using 'def'.\n\n"
-            "Example:\n def add(a, b):\n     return a + b\n\n"
-            "They help reduce repetition and organize code.",
+            "Defined using 'def'.",
 
         "OOP":
-            "Object Oriented Programming organizes code using classes and objects.\n\n"
-            "Example:\n class Student:\n     pass\n\n"
-            "It helps in building scalable applications."
+            "Object Oriented Programming uses classes and objects."
     },
 
     "data structures": {
         "Array":
-            "An array stores multiple elements in a single structure.\n\n"
-            "Example:\n arr = [1, 2, 3]\n\n"
-            "Each element is accessed using an index.",
+            "Array stores multiple values using indexes.",
 
         "Stack":
-            "Stack follows LIFO (Last In First Out).\n\n"
-            "Operations:\n- push\n- pop\n\n"
-            "Example:\nPush 1, Push 2 → Pop removes 2.",
+            "Stack follows LIFO (Last In First Out).",
 
         "Queue":
-            "Queue follows FIFO (First In First Out).\n\n"
-            "Operations:\n- enqueue\n- dequeue\n\n"
-            "Example:\nAdd 1, Add 2 → Remove removes 1.",
+            "Queue follows FIFO (First In First Out).",
 
         "Linked List":
-            "A linked list consists of nodes connected using pointers.\n\n"
-            "Each node contains data and a link to next node.\n\n"
-            "Used in dynamic memory allocation."
+            "Linked List uses connected nodes."
     },
 
     "dbms": {
         "Database":
-            "A database is an organized collection of data.\n\n"
-            "Example:\nStudent records in a system.\n\n"
-            "It helps store and manage data efficiently.",
+            "Database stores organized data.",
 
         "SQL":
-            "SQL is used to interact with databases.\n\n"
-            "Commands:\n- SELECT\n- INSERT\n- DELETE\n\n"
-            "Example:\nSELECT * FROM students;",
+            "SQL is used to interact with databases.",
 
         "Normalization":
-            "Normalization reduces data redundancy.\n\n"
-            "It organizes data into proper tables.\n\n"
-            "Improves efficiency and avoids duplication.",
+            "Normalization reduces redundancy.",
 
         "Primary Key":
-            "Primary key uniquely identifies each record.\n\n"
-            "Example:\nStudent ID.\n\n"
-            "Cannot be null or duplicate.",
-
-        "Foreign Key":
-            "Foreign key connects two tables.\n\n"
-            "It creates relationships between data.\n\n"
-            "Example:\nStudent ID referencing another table."
+            "Primary key uniquely identifies records."
     },
 
     "maths": {
         "Algebra":
-            "Algebra deals with variables and equations.\n\n"
-            "Example:\n x + 2 = 5 → x = 3\n\n"
-            "Used to find unknown values.",
+            "Algebra deals with equations and variables.",
 
         "Calculus":
-            "Calculus studies change and motion.\n\n"
-            "Includes differentiation and integration.\n\n"
-            "Used in engineering and physics.",
+            "Calculus studies change and motion.",
 
         "Matrices":
-            "A matrix is a 2D arrangement of numbers.\n\n"
-            "Example:\n [1 2]\n [3 4]\n\n"
-            "Used to solve systems of equations.",
+            "Matrices are 2D arrangements of numbers.",
 
         "Trigonometry":
-            "Trigonometry studies angles and triangles.\n\n"
-            "Important:\n sin, cos, tan\n\n"
-            "Example:\n sin(90°) = 1"
+            "Trigonometry studies angles and triangles."
     },
 
     "english": {
         "Grammar":
-            "Grammar is the system of rules in a language.\n\n"
-            "Includes nouns, verbs, tenses.\n\n"
-            "Example:\nShe is going to school.",
+            "Grammar is the set of language rules.",
 
         "Tenses":
-            "Tenses show time of action.\n\n"
-            "Present, Past, Future.\n\n"
-            "Example:\nI eat / I ate / I will eat.",
+            "Tenses show time of action.",
 
         "Vocabulary":
-            "Vocabulary is the set of words you know.\n\n"
-            "Example:\nHappy → Joyful\nBig → Large\n\n"
-            "Improves communication skills.",
+            "Vocabulary means words you know and use.",
 
         "Comprehension":
-            "Comprehension means understanding text.\n\n"
-            "It helps in reading and answering questions correctly."
-    },
+            "Comprehension means understanding text."
+    }
 }
-# create window
-root = tk.Tk()
-root.title("AI Study Assistant")
-root.geometry("500x400")
 
-# function for study topic
+root = tk.Tk()
+root.title("Smart AI Study Assistant")
+root.geometry("500x450")
+root.configure(bg="#dbeafe")
+
 def study_topic():
-    subject = simpledialog.askstring("Subject", "Enter subject:")
+
+    subject = simpledialog.askstring(
+        "Subject",
+        "Enter subject:\nProgramming / Data Structures / DBMS / Maths / English"
+    )
 
     if subject is None:
         return
@@ -144,7 +106,7 @@ def study_topic():
 
     topic = simpledialog.askstring(
         "Topic",
-        f"Available topics:\n{', '.join(topics)}\n\nEnter one:"
+        f"Available Topics:\n\n{', '.join(topics)}\n\nEnter topic:"
     )
 
     if topic is None:
@@ -155,23 +117,39 @@ def study_topic():
     found = False
 
     for t in topics_data[subject]:
+
         if topic == t.lower():
+
             explanation = topics_data[subject][t]
-            messagebox.showinfo(t, explanation)
+
+            messagebox.showinfo(
+                t,
+                f"📘 {t}\n\n{explanation}"
+            )
+
             found = True
             break
 
     if not found:
-        messagebox.showinfo("Error", "Topic not found!")
+        messagebox.showinfo(
+            "Error",
+            f"Topic not found!\nAvailable Topics:\n{', '.join(topics)}"
+        )
+
+
+
 def take_quiz():
-    subject = simpledialog.askstring("Subject", "Enter subject for quiz:")
+
+    subject = simpledialog.askstring(
+        "Subject",
+        "Enter subject for quiz:"
+    )
 
     if subject is None:
         return
 
     subject = subject.strip().lower()
 
-    # ALL SUBJECT QUIZ DATA IN ONE PLACE
     quiz_data = {
 
         "programming": {
@@ -180,33 +158,37 @@ def take_quiz():
                 ("Which symbol is used for comments?", "#"),
                 ("Which loop repeats code?", "for")
             ],
+
             "medium": [
-                ("What is the output of 2+2?", "4"),
-                ("Which data type stores text?", "string"),
+                ("Which function takes input?", "input"),
+                ("Which keyword creates class?", "class"),
                 ("What does len('hi') return?", "2")
             ],
+
             "hard": [
                 ("What does OOP stand for?", "object oriented programming"),
-                ("Which function takes input?", "input"),
-                ("Which keyword defines class?", "class")
+                ("Which data type stores text?", "string"),
+                ("What is used to repeat code?", "loop")
             ]
         },
 
         "data structures": {
             "easy": [
                 ("Which structure uses LIFO?", "stack"),
-                ("Which uses FIFO?", "queue"),
-                ("Array stores how many elements?", "multiple")
+                ("Which structure uses FIFO?", "queue"),
+                ("Which DS uses nodes?", "linked list")
             ],
+
             "medium": [
                 ("Stack remove operation?", "pop"),
                 ("Queue add operation?", "enqueue"),
-                ("Which DS uses nodes?", "linked list")
+                ("Top of stack?", "peek")
             ],
+
             "hard": [
-                ("Top of stack is called?", "peek"),
+                ("Array search type?", "linear"),
                 ("Which DS uses pointers?", "linked list"),
-                ("Search time in array?", "linear")
+                ("Queue remove operation?", "dequeue")
             ]
         },
 
@@ -216,13 +198,15 @@ def take_quiz():
                 ("Which language is used in DBMS?", "sql"),
                 ("Database stores?", "data")
             ],
+
             "medium": [
                 ("Primary key is?", "unique"),
                 ("Normalization reduces?", "redundancy"),
                 ("SQL command to view data?", "select")
             ],
+
             "hard": [
-                ("Foreign key is used for?", "relationship"),
+                ("Foreign key creates?", "relationship"),
                 ("Can primary key be null?", "no"),
                 ("INSERT is used to?", "add")
             ]
@@ -234,15 +218,17 @@ def take_quiz():
                 ("5 × 2 ?", "10"),
                 ("10 ÷ 2 ?", "5")
             ],
+
             "medium": [
-                ("Derivative of x^2?", "2x"),
-                ("Value of sin(90)?", "1"),
-                ("Matrix is?", "2d array")
-            ],
-            "hard": [
-                ("Integration of 1 dx?", "x"),
+                ("sin(90)?", "1"),
                 ("cos(0)?", "1"),
                 ("tan(45)?", "1")
+            ],
+
+            "hard": [
+                ("Derivative of x²?", "2x"),
+                ("Integration of 1 dx?", "x"),
+                ("Matrix is?", "2d array")
             ]
         },
 
@@ -250,28 +236,31 @@ def take_quiz():
             "easy": [
                 ("Plural of book?", "books"),
                 ("Which is a verb: run or table?", "run"),
-                ("Noun means?", "name")
+                ("Opposite of big?", "small")
             ],
+
             "medium": [
-                ("Opposite of big?", "small"),
-                ("Synonym of happy?", "joyful"),
-                ("'I am eating' tense?", "present")
-            ],
-            "hard": [
                 ("Past tense of go?", "went"),
-                ("Pronoun replaces?", "noun"),
-                ("Adjective describes?", "noun")
+                ("Synonym of happy?", "joyful"),
+                ("Pronoun replaces?", "noun")
+            ],
+
+            "hard": [
+                ("Adjective describes?", "noun"),
+                ("Present tense example?", "i eat"),
+                ("Vocabulary means?", "words")
             ]
         }
     }
 
-    #  Subject check
     if subject not in quiz_data:
         messagebox.showinfo("Error", "Subject not available!")
         return
 
-    #  Difficulty
-    level = simpledialog.askstring("Difficulty", "Choose level: Easy / Medium / Hard")
+    level = simpledialog.askstring(
+        "Difficulty",
+        "Choose level:\nEasy / Medium / Hard"
+    )
 
     if level is None:
         return
@@ -285,59 +274,141 @@ def take_quiz():
     questions = quiz_data[subject][level]
 
     score = 0
+
     random.shuffle(questions)
 
-    #  Quiz loop
+    # Quiz loop
     for q, ans in questions:
-        messagebox.showinfo("Timer", "You have 10 seconds!")
+
+        messagebox.showinfo(
+            "Timer",
+            "⏰ You have 10 seconds!"
+        )
 
         start = time.time()
-        answer = simpledialog.askstring("Quiz", q)
+
+        answer = simpledialog.askstring(
+            "Quiz",
+            q
+        )
+
         end = time.time()
 
         if answer is None:
             return
 
         if end - start > 10:
-            messagebox.showinfo("Time's up!", "⏰ You took too long!")
+            messagebox.showinfo(
+                "Time's Up!",
+                "⏰ You took too long!"
+            )
             continue
 
         if answer.strip().lower() == ans.lower():
-            messagebox.showinfo("Result", "Correct!")
+            messagebox.showinfo(
+                "Result",
+                "✅ Correct!"
+            )
             score += 1
-        else:
-            messagebox.showinfo("Result", f"Wrong! Correct answer is {ans}")
-    #  Final score
-    if score == len(questions):
-     feedback = "Excellent! 🎉"
-    elif score >= 2:
-     feedback = "Good job 👍"
-    else:
-     feedback = "Keep practicing 💪"
 
-messagebox.showinfo("Final Score", f"Your score is {score}/{len(questions)}\n{feedback}")
-score_history.append(f"{subject} → {score}/{len(questions)}")
+        else:
+            messagebox.showinfo(
+                "Result",
+                f"❌ Wrong!\nCorrect answer: {ans}"
+            )
+
+    # Final Feedback
+    if score == len(questions):
+        feedback = "Excellent! 🎉"
+
+    elif score >= 2:
+        feedback = "Good Job 👍"
+
+    else:
+        feedback = "Keep Practicing 💪"
+
+    messagebox.showinfo(
+        "Final Score",
+        f"Your score is {score}/{len(questions)}\n\n{feedback}"
+    )
+
+    score_history.append(
+        f"{subject} → {score}/{len(questions)}"
+    )
+
 
 def show_history():
+
     if len(score_history) == 0:
-        messagebox.showinfo("History", "No quiz attempts yet.")
+
+        messagebox.showinfo(
+            "History",
+            "No quiz attempts yet."
+        )
+
     else:
-        messagebox.showinfo("History", f"Past scores: {score_history}")
-# title label
-label = tk.Label(root, text="AI Study Assistant", font=("Arial", 16))
+
+        messagebox.showinfo(
+            "History",
+            f"Past Scores:\n\n" + "\n".join(score_history)
+        )
+
+label = tk.Label(
+    root,
+    text="Smart AI Study Assistant",
+    font=("Arial", 18, "bold"),
+    bg="#dbeafe"
+)
+
 label.pack(pady=20)
-welcome = tk.Label(root, text="Learn • Practice • Improve", font=("Arial", 10))
+
+welcome = tk.Label(
+    root,
+    text="Learn • Practice • Improve",
+    font=("Arial", 11),
+    bg="#dbeafe"
+)
+
 welcome.pack()
 
-# study button
-study_btn = tk.Button(root, text="Study Topic", command=study_topic)
+study_btn = tk.Button(
+    root,
+    text="Study Topic",
+    font=("Arial", 12),
+    bg="#60a5fa",
+    fg="white",
+    width=20,
+    command=study_topic
+)
+
 study_btn.pack(pady=10)
 
-quiz_btn = tk.Button(root, text="Take Quiz", command=take_quiz)
+quiz_btn = tk.Button(
+    root,
+    text="Take Quiz",
+    font=("Arial", 12),
+    bg="#34d399",
+    fg="white",
+    width=20,
+    command=take_quiz
+)
+
 quiz_btn.pack(pady=10)
 
-history_btn = tk.Button(root, text="View Score History", command=show_history)
+history_btn = tk.Button(
+    root,
+    text="View Score History",
+    font=("Arial", 12),
+    bg="#f59e0b",
+    fg="white",
+    width=20,
+    command=show_history
+)
+
 history_btn.pack(pady=10)
 
-# run app
+# =========================
+# RUN APP
+# =========================
+
 root.mainloop()
